@@ -4,13 +4,19 @@ A minimal implementation of the FSRS (Free Spaced Repetition Scheduler) algorith
 
 ## Installation
 
+Node.js
+
 ```
-TODO
+npx jsr add @austinshelby/simple-ts-fsrs
+```
+
+Deno
+
+```
+deno add jsr:@austinshelby/simple-ts-fsrs
 ```
 
 ## Quickstart
-
-// TODO: Add more and better examples with explanations
 
 ```ts
 import { FSRS } from "@austinshelby/simple-ts-fsrs";
