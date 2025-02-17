@@ -31,7 +31,6 @@ const assessment = fsrs.assessRecall({
 // Assess the ability to recall information on subsequent attempts
 const newAssessment = fsrs.assessRecall({
   rating: "Forgot",
-  now: new Date(),
   previousAssessment: assessment,
 });
 
