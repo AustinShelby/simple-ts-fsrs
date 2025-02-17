@@ -15,7 +15,6 @@ export interface AssessmentParams {
 }
 
 /** An assessment of an ability to recall information. */
-// TODO: Should this be a class or an interface? Maybe a method that calculates the current retrievability could be interesting.
 export class Assessment {
   readonly assessedAt: Date;
   readonly nextScheduledAssessment: Date;
@@ -39,5 +38,15 @@ export class Assessment {
     this.stability = stability;
     this.difficulty = difficulty;
     this.state = state;
+  }
+
+  /** Calculate retrievability at a point in time.
+   *
+   * @param date Date to calculate the retrievability.
+   */
+  public getRetrievability(date: Date = new Date()): number {
+    const elapsedDays = (date.getTime() - this.assessedAt.getTime()) / 86400000;
+
+    return Math.pow(1 + (19 / 81) * (elapsedDays / this.stability), -0.5);
   }
 }
