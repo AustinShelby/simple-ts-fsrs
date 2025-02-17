@@ -52,11 +52,11 @@ export class FSRS {
   /** Assess an ability to recall information */
   assessRecall({
     rating,
-    now = new Date(),
+    date = new Date(),
     previousAssessment,
   }: {
     rating: Rating;
-    now?: Date;
+    date?: Date;
     previousAssessment?: Assessment;
   }): Assessment {
     const assessmentStrategy =
@@ -64,7 +64,7 @@ export class FSRS {
 
     const assessment = assessmentStrategy.assess({
       rating,
-      now,
+      date,
     });
 
     return assessment;

@@ -27,7 +27,7 @@ export abstract class BaseAssessmentStrategy {
     this.w = w;
   }
 
-  abstract assess({ rating, now }: { rating: Rating; now: Date }): Assessment;
+  abstract assess({ rating, date }: { rating: Rating; date: Date }): Assessment;
 
   protected initDifficulty(rating: Rating) {
     const ratingValue = RatingValues[rating];
@@ -77,16 +77,16 @@ export abstract class BaseAssessmentStrategy {
 }
 
 export class InitialAssessmentStrategy extends BaseAssessmentStrategy {
-  assess({ rating, now }: { rating: Rating; now: Date }): Assessment {
+  assess({ rating, date }: { rating: Rating; date: Date }): Assessment {
     const stability = this.calculateStability(rating);
     const nextScheduledAssessment = this.scheduleNextAssessment({
       rating,
-      now,
+      date,
       stability,
     });
 
     return new Assessment({
-      assessedAt: now,
+      assessedAt: date,
       nextScheduledAssessment: nextScheduledAssessment,
       stability,
       difficulty: this.initDifficulty(rating),
@@ -97,17 +97,17 @@ export class InitialAssessmentStrategy extends BaseAssessmentStrategy {
   // TODO: Build proper learning step functionality if deemed necessary
   private scheduleNextAssessment({
     rating,
-    now,
+    date,
     stability,
   }: {
     rating: Rating;
-    now: Date;
+    date: Date;
     stability: number;
   }): Date {
     if (rating === "Mastered") {
       const masteredInterval = this.nextInterval(stability);
       return this.addDaysToDate({
-        date: now,
+        date: date,
         days: masteredInterval,
       });
     } else {
@@ -117,7 +117,7 @@ export class InitialAssessmentStrategy extends BaseAssessmentStrategy {
         Remembered: 10,
       };
       return this.addMinutesToDate({
-        date: now,
+        date: date,
         minutes: minutesByRating[rating],
       });
     }
@@ -183,18 +183,18 @@ abstract class AssessmentStrategy extends BaseAssessmentStrategy {
 }
 
 export class LearningAssessmentStrategy extends AssessmentStrategy {
-  assess({ rating, now }: { rating: Rating; now: Date }): Assessment {
+  assess({ rating, date }: { rating: Rating; date: Date }): Assessment {
     const stability = this.calculateStability({
       stability: this.previousAssessment.stability,
       rating,
     });
 
     return new Assessment({
-      assessedAt: now,
+      assessedAt: date,
       nextScheduledAssessment: this.scheduleNextAssessment({
         rating,
         stability,
-        now,
+        date,
       }),
       stability: stability,
       difficulty: this.calculateDifficulty({
@@ -223,21 +223,21 @@ export class LearningAssessmentStrategy extends AssessmentStrategy {
   private scheduleNextAssessment({
     rating,
     stability,
-    now,
+    date,
   }: {
     rating: Rating;
     stability: number;
-    now: Date;
+    date: Date;
   }): Date {
     if (rating === "Forgot") {
-      return this.addMinutesToDate({ date: now, minutes: 5 });
+      return this.addMinutesToDate({ date: date, minutes: 5 });
     } else if (rating === "Struggled") {
-      return this.addMinutesToDate({ date: now, minutes: 10 });
+      return this.addMinutesToDate({ date: date, minutes: 10 });
     } else {
       const interval = this.nextInterval(stability);
 
       return this.addDaysToDate({
-        date: now,
+        date: date,
         days: interval,
       });
     }
@@ -283,21 +283,21 @@ export class ReviewAssessmentStrategy extends AssessmentStrategy {
       (Math.pow(requestRetention, 1 / -0.5) - 1) / (19 / 81);
   }
 
-  assess({ rating, now }: { rating: Rating; now: Date }): Assessment {
+  assess({ rating, date }: { rating: Rating; date: Date }): Assessment {
     const stability = this.calculateStability({
       previousStability: this.previousAssessment.stability,
       rating,
       previouslyAssessedAt: this.previousAssessment.assessedAt,
       previousDifficulty: this.previousAssessment.difficulty,
-      now,
+      date,
     });
 
     return new Assessment({
-      assessedAt: now,
+      assessedAt: date,
       nextScheduledAssessment: this.scheduleNextAssessment({
         rating,
         stability,
-        now,
+        date,
       }),
       stability: stability,
       difficulty: this.calculateDifficulty({
@@ -318,15 +318,15 @@ export class ReviewAssessmentStrategy extends AssessmentStrategy {
 
   private scheduleNextAssessment({
     rating,
-    now,
+    date,
     stability,
   }: {
     rating: Rating;
-    now: Date;
+    date: Date;
     stability: number;
   }) {
     if (rating === "Forgot") {
-      return new Date(now.getTime() + 5 * 60 * 1000);
+      return new Date(date.getTime() + 5 * 60 * 1000);
     } else {
       const interval = this.clamp({
         value: Math.round(stability * this.intervalModifier),
@@ -335,7 +335,7 @@ export class ReviewAssessmentStrategy extends AssessmentStrategy {
       });
 
       return this.addDaysToDate({
-        date: now,
+        date: date,
         days: interval,
       });
     }
@@ -345,20 +345,20 @@ export class ReviewAssessmentStrategy extends AssessmentStrategy {
     previousStability,
     previouslyAssessedAt,
     previousDifficulty,
-    now,
+    date,
     rating,
   }: {
     previousStability: number;
     previouslyAssessedAt: Date;
     previousDifficulty: number;
-    now: Date;
+    date: Date;
     rating: Rating;
   }) {
     const newElapsedDays =
-      (now.getTime() - previouslyAssessedAt.getTime()) / 86400000;
+      (date.getTime() - previouslyAssessedAt.getTime()) / 86400000;
 
     const retrievability = Math.pow(
-      1 + ((19 / 81) * newElapsedDays) / previousStability,
+      1 + (19 / 81) * (newElapsedDays / previousStability),
       -0.5
     );
 

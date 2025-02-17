@@ -34,6 +34,9 @@ const newAssessment = fsrs.assessRecall({
   now: new Date(),
   previousAssessment: assessment,
 });
+
+// Get the current retrievability
+const retrievability = assessment.getRetrievability();
 ```
 
 ## About

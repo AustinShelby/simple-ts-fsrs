@@ -7,7 +7,7 @@ const fsrs = new FSRS();
 Deno.test("Regression: Assessing 'Forgot' on 'New'", () => {
   const assessment = fsrs.assessRecall({
     rating: "Forgot",
-    now: new Date("2024-12-02T00:00:00.000Z"),
+    date: new Date("2024-12-02T00:00:00.000Z"),
   });
 
   assertEquals(assessment.difficulty, 7.2102);
@@ -23,7 +23,7 @@ Deno.test("Regression: Assessing 'Forgot' on 'New'", () => {
 Deno.test("Regression: Assessing 'Struggled' on 'New'", () => {
   const assessment = fsrs.assessRecall({
     rating: "Struggled",
-    now: new Date("2024-12-02T00:00:00.000Z"),
+    date: new Date("2024-12-02T00:00:00.000Z"),
   });
 
   assertEquals(assessment.difficulty, 6.508547223894037);
@@ -39,7 +39,7 @@ Deno.test("Regression: Assessing 'Struggled' on 'New'", () => {
 Deno.test("Regression: Assessing 'Remembered' on 'New'", () => {
   const assessment = fsrs.assessRecall({
     rating: "Remembered",
-    now: new Date("2024-12-02T00:00:00.000Z"),
+    date: new Date("2024-12-02T00:00:00.000Z"),
   });
 
   assertEquals(assessment.difficulty, 5.314577829570867);
@@ -55,7 +55,7 @@ Deno.test("Regression: Assessing 'Remembered' on 'New'", () => {
 Deno.test("Regression: Assessing 'Mastered' on 'New'", () => {
   const assessment = fsrs.assessRecall({
     rating: "Mastered",
-    now: new Date("2024-12-02T00:00:00.000Z"),
+    date: new Date("2024-12-02T00:00:00.000Z"),
   });
 
   assertEquals(assessment.difficulty, 3.28285649513529);
@@ -81,7 +81,7 @@ Deno.test("Regression: Assessing 'Forgot' on 'Learning'", () => {
 
   const assessment = fsrs.assessRecall({
     rating: "Forgot",
-    now: nextScheduledAssessmentDate,
+    date: nextScheduledAssessmentDate,
     previousAssessment,
   });
 
@@ -108,7 +108,7 @@ Deno.test("Regression: Assessing 'Struggled' on 'Learning'", () => {
 
   const assessment = fsrs.assessRecall({
     rating: "Struggled",
-    now: nextScheduledAssessmentDate,
+    date: nextScheduledAssessmentDate,
     previousAssessment,
   });
 
@@ -135,7 +135,7 @@ Deno.test("Regression: Assessing 'Remembered' on 'Learning'", () => {
 
   const assessment = fsrs.assessRecall({
     rating: "Remembered",
-    now: nextScheduledAssessmentDate,
+    date: nextScheduledAssessmentDate,
     previousAssessment,
   });
 
@@ -162,7 +162,7 @@ Deno.test("Regression: Assessing 'Mastered' on 'Learning'", () => {
 
   const assessment = fsrs.assessRecall({
     rating: "Mastered",
-    now: nextScheduledAssessmentDate,
+    date: nextScheduledAssessmentDate,
     previousAssessment,
   });
 
@@ -189,7 +189,7 @@ Deno.test("Regression: Assessing 'Forgot' on 'Relearning'", () => {
 
   const assessment = fsrs.assessRecall({
     rating: "Forgot",
-    now: nextScheduledAssessmentDate,
+    date: nextScheduledAssessmentDate,
     previousAssessment,
   });
 
@@ -216,7 +216,7 @@ Deno.test("Regression: Assessing 'Struggled' on 'Relearning'", () => {
 
   const assessment = fsrs.assessRecall({
     rating: "Struggled",
-    now: nextScheduledAssessmentDate,
+    date: nextScheduledAssessmentDate,
     previousAssessment,
   });
 
@@ -243,7 +243,7 @@ Deno.test("Regression: Assessing 'Remembered' on 'Relearning'", () => {
 
   const assessment = fsrs.assessRecall({
     rating: "Remembered",
-    now: nextScheduledAssessmentDate,
+    date: nextScheduledAssessmentDate,
     previousAssessment,
   });
 
@@ -270,7 +270,7 @@ Deno.test("Regression: Assessing 'Mastered' on 'Relearning'", () => {
 
   const assessment = fsrs.assessRecall({
     rating: "Mastered",
-    now: nextScheduledAssessmentDate,
+    date: nextScheduledAssessmentDate,
     previousAssessment,
   });
 
@@ -297,7 +297,7 @@ Deno.test("Regression: Assessing 'Forgot' on 'Review'", () => {
 
   const assessment = fsrs.assessRecall({
     rating: "Forgot",
-    now: nextScheduledAssessmentDate,
+    date: nextScheduledAssessmentDate,
     previousAssessment,
   });
 
@@ -324,7 +324,7 @@ Deno.test("Regression: Assessing 'Struggled' on 'Review'", () => {
 
   const assessment = fsrs.assessRecall({
     rating: "Struggled",
-    now: nextScheduledAssessmentDate,
+    date: nextScheduledAssessmentDate,
     previousAssessment,
   });
 
@@ -351,7 +351,7 @@ Deno.test("Regression: Assessing 'Remembered' on 'Review'", () => {
 
   const assessment = fsrs.assessRecall({
     rating: "Remembered",
-    now: nextScheduledAssessmentDate,
+    date: nextScheduledAssessmentDate,
     previousAssessment,
   });
 
@@ -378,7 +378,7 @@ Deno.test("Regression: Assessing 'Mastered' on 'Review'", () => {
 
   const assessment = fsrs.assessRecall({
     rating: "Mastered",
-    now: nextScheduledAssessmentDate,
+    date: nextScheduledAssessmentDate,
     previousAssessment,
   });
 
