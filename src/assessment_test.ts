@@ -39,6 +39,7 @@ Deno.test(
       secondAssessment.nextScheduledAssessment
     );
 
+    // Doesn't quite match 0.9 probably due to some rounding errors which are not that significant
     assertAlmostEquals(retrievability, 0.9, 0.0000001);
   }
 );

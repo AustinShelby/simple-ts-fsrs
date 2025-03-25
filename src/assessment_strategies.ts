@@ -326,7 +326,10 @@ export class ReviewAssessmentStrategy extends AssessmentStrategy {
     stability: number;
   }) {
     if (rating === "Forgot") {
-      return new Date(date.getTime() + 5 * 60 * 1000);
+      return this.addMinutesToDate({
+        date: date,
+        minutes: 5,
+      });
     } else {
       const interval = this.clamp({
         value: Math.round(stability * this.intervalModifier),

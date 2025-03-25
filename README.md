@@ -27,7 +27,7 @@ const fsrs = new FSRS();
 
 // Assess the ability to recall information for the first time
 const assessment = fsrs.assessRecall({
-  rating: "Remembered",
+  rating: "Remembered", // "Forgot" | "Struggled" | "Remembered" | "Mastered"
 });
 
 // Assess the ability to recall information on subsequent attempts
@@ -50,13 +50,37 @@ The `Assessment` class provides the following data:
 
 - `stability` number of days until the chance to recall the information successfully drops below 90%. The higher the better.
 
-- `difficulty` how difficult it is to change the stability.
+- `difficulty` how difficult it is to change the stability. _Note that this does not mean how difficult it is to remember a flashcard._
 
-- `state` in which state the assessment is currently in (Learning, Review, or Relearning)
+- `state` in which state the assessment is currently in (**Learning**, **Review**, or **Relearning**)
 
 ## About
 
-`simple-ts-fsrs` offers a lightweight implementation of the FSRS algorithm. Note that it will produce slightly different results compared to other FSRS implementations. It provides only the least amount of information necessary as all the other information (e.g. previous assessments or lapses) required to build a fully fledged spaced repetition apps can be calculated on the application level.
+`simple-ts-fsrs` offers a lightweight implementation of the FSRS algorithm. Note that it will produce slightly different results compared to other FSRS implementations due to fixing certain bugs and using more precise units for handling time. It provides only the least amount of information necessary as all other necessary information (e.g. previous assessments or lapses) required to build a fully fledged spaced repetition app can be calculated at the application level.
+
+### Opinions
+
+#### Fuzzing should happen at the application level
+
+Randomizing the order in which flashcards appear should be handled at the application level rather than by fuzzing the next assessment date.
+
+#### New cards don't exist
+
+In `simple-ts-fsrs` there is no such thing as a **New** flashcard state, only _Learning_, _Review_, and _Relearning_.
+
+#### Cards don't exist
+
+`simple-ts-fsrs` has no concept of a card or a flashcard. If you are building a flashcard application, I recommend creating a separate `Card` model that contains multiple assessments.
+
+```ts
+type Card = {
+  front: string;
+  back: string;
+  assessments: Assessment[];
+};
+```
+
+> If there is interest in a longer tutorial on how to build a flashcard learning app please let me know!
 
 ## Used in
 
